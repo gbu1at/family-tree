@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="controls">
+        <h2>Люди в базе данных</h2>
+        <a href="{{ url_for('add_person') }}" class="btn">Добавить человека</a>
+    </div>
+    
+
+    <div class="tree-wrapper">
+    <div class="tree-controls">
+        <div class="zoom-controls">
+            <button class="zoom-btn" onclick="zoomIn()">+</button>
+            <button class="zoom-btn" onclick="zoomOut()">-</button>
+            <button class="reset-btn" onclick="resetView()">⟳</button>
+        </div>
+        
+        <div class="pan-controls">
+            <button class="pan-btn up" onclick="panUp()">↑</button>
+            <div class="horizontal-controls">
+                <button class="pan-btn left" onclick="panLeft()">←</button>
+                <button class="pan-btn center" onclick="resetView()">○</button>
+                <button class="pan-btn right" onclick="panRight()">→</button>
+            </div>
+            <button class="pan-btn down" onclick="panDown()">↓</button>
+        </div>
+    </div>
+    
+    <div class="tree-container" id="treeContainer">
+        {% for person in persons %}
+        <div class="person-node"
+            style="left: {{ person.x }}px; top: {{ person.y }}px;"
+            data-person-id="{{ person.id }}">
+            <div class="person-circle">
+                {{ person.first_name[0] if person.first_name else '?' }}{{ person.second_name[0] if person.second_name else '?' }}
+            </div>
+            <div class="person-info">
+                <span class="person-name">{{ person.second_name }} {{ person.first_name }}</span>
+                {% if person.third_name %}
+                <span class="person-patronymic">{{ person.third_name }}</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="search-controls">
+    <form id="searchForm" class="search-form" onsubmit="searchPerson(event)">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="searchLastName">Фамилия</label>
+                <input type="text" id="searchLastName" name="last_name" 
+                       placeholder="Фамилия" class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <label for="searchFirstName">Имя</label>
+                <input type="text" id="searchFirstName" name="first_name" 
+                       placeholder="Имя" class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <label for="searchPatronymic">Отчество</label>
+                <input type="text" id="searchPatronymic" name="patronymic" 
+                       placeholder="Отчество" class="form-input">
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="search-btn">
+                <span class="search-icon">🔍</span>
+                Найти
+            </button>
+            <button type="button" class="clear-btn" onclick="clearSearch()">
+                <span class="clear-icon">✕</span>
+                Очистить
+            </button>
+        </div>
+    </form>
+</div>
+
+</div>
+{% endblock %}

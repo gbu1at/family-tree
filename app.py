@@ -18,9 +18,12 @@ def add_person():
         try:
             person = PersonInfo()
 
+            print(request.form.get('gender'))
+
             person.set( first_name=request.form.get('first_name'),
                         second_name=request.form.get('second_name'),
                         third_name=request.form.get('third_name'),
+                        gender=request.form.get('gender'),
                         x=random.randint(0, 200),
                         y=random.randint(0, 200),)
             
@@ -58,27 +61,6 @@ def delete_person(person_id):
     return "Человек не найден"
 
 
-
-@app.route('/api/person/<int:person_id>')
-def get_person_data(person_id):
-    """Получение данных человека"""
-    try:
-        person = db.get_person(person_id)
-        if person:
-            return jsonify({
-                'date_birth': person.date_birth.isoformat() if person.date_birth else None,
-                'place_birth': person.place_birth,
-                'age': person.age,
-                'date_death': person.date_death.isoformat() if person.date_death else None,
-                'place_death': person.place_death,
-                'history': person.history,
-                'education': person.education,
-                'work': person.work
-            })
-        return jsonify({'error': 'Person not found'}), 404
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
 @app.route('/api/update_person', methods=['POST'])
 def update_person_data():
     """Обновление данных человека"""
@@ -100,6 +82,73 @@ def update_person_data():
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
+
+
+@app.route('/api/person/<int:person_id>')
+def get_person_data(person_id):
+    """Получение данных человека включая информацию о родителях"""
+    print(person_id)
+    try:
+        person = db.get_person(person_id)
+        if person:
+            # Получаем информацию о родителях
+            mother_name = None
+            father_name = None
+            if person.mom_id:
+                mother = db.get_person(person.mom_id)
+                mother_name = f"{mother.second_name} {mother.first_name} {mother.third_name or ''}"
+            if person.dad_id:
+                father = db.get_person(person.dad_id)
+                father_name = f"{father.second_name} {father.first_name} {father.third_name or ''}"
+            
+            print(person.date_birth)
+
+            return jsonify({
+                'id': person.id,
+                'date_birth': person.date_birth.isoformat() if person.date_birth else None,
+                'place_birth': person.place_birth,
+                'age': person.age,
+                "gender": person.gender,
+                'date_death': person.date_death.isoformat() if person.date_death else None,
+                'place_death': person.place_death,
+                'history': person.history,
+                'education': person.education,
+                'work': person.work,
+                'mother_id': person.mom_id,
+                'father_id': person.dad_id,
+                'mother_name': mother_name,
+                'father_name': father_name
+            })
+        return jsonify({'error': 'Person not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/persons')
+def get_persons():
+    """API для получения всех людей в формате JSON"""
+    try:
+        persons = db.get_all_persons()
+        persons_data = []
+        
+        for person in persons:
+            persons_data.append({
+                'id': person.id,
+                'first_name': person.first_name,
+                'second_name': person.second_name,
+                'third_name': person.third_name,
+            })
+        
+        return jsonify(persons_data)
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/api/list_relation')
+def list_relation():
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)

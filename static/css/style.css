@@ -219,8 +219,8 @@ footer {
 
 .tree-container {
     position: relative;
-    width: 6000px;   /* Большая область для перемещения */
-    height: 6000px;  /* Большая область для перемещения */
+    width: 1000px;   /* Большая область для перемещения */
+    height: 1000px;  /* Большая область для перемещения */
     transform-origin: 0 0;
     transition: transform 0.3s ease;
     background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, 
@@ -563,4 +563,130 @@ footer {
 
 .btn-secondary:hover {
     background: #e9ecef;
+}
+
+
+
+.form-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section h3 {
+    margin-bottom: 15px;
+    color: #667eea;
+    font-size: 16px;
+}
+
+.parent-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.parent-selector span {
+    flex: 1;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+.btn-select {
+    padding: 6px 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-clear {
+    padding: 6px 8px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.parents-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.parent-item {
+    padding: 10px;
+    border: 1px solid #eee;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.parent-item:hover {
+    background-color: #f8f9fa;
+}
+
+.parent-item.selected {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+}
+
+
+.gender-selector {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.gender-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.gender-btn:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.gender-btn.selected {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.gender-btn.male.selected {
+    border-color: #3498db;
+    background: #3498db;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.gender-btn.female.selected {
+    border-color: #df85a3;
+    background: #df85a3;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+}
+
+.gender-btn .gender-icon {
+    font-size: 16px;
+    font-weight: bold;
 }

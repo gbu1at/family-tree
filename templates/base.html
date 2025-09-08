@@ -13,6 +13,7 @@
             <ul>
                 <li><a href="{{ url_for('index') }}">Главная</a></li>
                 <li><a href="{{ url_for('add_person') }}">Добавить человека</a></li>
+                <li><a href="{{ url_for('list_relation') }}">Родственики</a></li>
             </ul>
         </nav>
     </header>
@@ -29,6 +30,7 @@
     <script src="{{ url_for('static', filename='js/pan.js') }}"></script>
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>
     <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/parents.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/gender.js') }}"></script>
 </body>
 </html>

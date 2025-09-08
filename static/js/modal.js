@@ -34,7 +34,10 @@ async function loadPersonData(personId) {
         const response = await fetch(`/api/person/${personId}`);
         const person = await response.json();
         
+        // console.log(person.date_birth)
+        // console.log(person.xxxx)
         // Заполняем форму данными
+        document.getElementById('gender').value = person.gender;
         document.getElementById('birthDate').value = person.date_birth || '';
         document.getElementById('birthPlace').value = person.place_birth || '';
         document.getElementById('age').value = person.age || '';
@@ -43,6 +46,9 @@ async function loadPersonData(personId) {
         document.getElementById('history').value = person.history || '';
         document.getElementById('education').value = person.education ? JSON.parse(person.education).join(', ') : '';
         document.getElementById('work').value = person.work ? JSON.parse(person.work).join(', ') : '';
+
+        console.log(person.gender)
+        selectGender(person.gender);
         
     } catch (error) {
         console.error('Ошибка загрузки данных:', error);

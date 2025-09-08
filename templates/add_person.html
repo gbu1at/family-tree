@@ -5,21 +5,38 @@
     <h2>Добавить нового человека</h2>
     
     <form method="POST" class="person-form">
-        <div class="form-group">
-            <label for="first_name">Имя *</label>
-            <input type="text" id="first_name" name="first_name" required>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="first_name">Имя *</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="second_name">Фамилия *</label>
+                <input type="text" id="second_name" name="second_name" required>
+            </div>
         </div>
-        
-        <div class="form-group">
-            <label for="second_name">Фамилия *</label>
-            <input type="text" id="second_name" name="second_name" required>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="third_name">Отчество</label>
+                <input type="text" id="third_name" name="third_name">
+            </div>
+            
+            <div class="form-group">
+                <label>Пол *</label>
+                <div class="gender-selector">
+                    <input type="hidden" id="gender" name="gender" required>
+                    <button type="button" class="gender-btn male" data-gender="m" onclick="selectGender('m')">
+                        ♂ Мужской
+                    </button>
+                    <button type="button" class="gender-btn female" data-gender="f" onclick="selectGender('f')">
+                        ♀ Женский
+                    </button>
+                </div>
+            </div>
         </div>
-        
-        <div class="form-group">
-            <label for="third_name">Отчество</label>
-            <input type="text" id="third_name" name="third_name">
-        </div>
-        
+
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Добавить</button>
             <a href="{{ url_for('index') }}" class="btn btn-secondary">Отмена</a>

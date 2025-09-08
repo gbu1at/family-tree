@@ -7,6 +7,7 @@ class PersonInfo:
         self.first_name: Optional[str] = None
         self.second_name: Optional[str] = None
         self.third_name: Optional[str] = None
+        self.gender: Optional[str] = None
 
         self.date_birth: Optional[date] = None
         self.place_birth: Optional[str] = None
@@ -43,6 +44,18 @@ class PersonInfo:
         if third_name is not None and not isinstance(third_name, str):
             raise ValueError("Отчество должно быть строкой или None")
         self.third_name = third_name.strip() if third_name else None
+
+
+    def set_gender(self, gender: str) -> None:
+        if not isinstance(gender, str):
+            raise ValueError("gender должен быть строкой")
+        
+        gender = gender.lower()
+
+        if gender not in ["f", "m"]:
+            raise ValueError("gender должен быть строкой равной f или m")
+
+        self.gender = gender
     
     def set_date_birth(self, date_birth: Optional[Union[date, str]]) -> None:
         if date_birth is not None:
@@ -161,6 +174,7 @@ class PersonInfo:
         for key, value in info.items():
             if hasattr(self, key):
                 setter_method = f"set_{key}"
+                print(setter_method)
                 if hasattr(self, setter_method):
                     getattr(self, setter_method)(value)
                 else:
@@ -186,6 +200,7 @@ def person_to_dict(person: PersonInfo) -> Dict[str, Any]:
         'first_name': person.first_name,
         'second_name': person.second_name,
         'third_name': person.third_name,
+        'gender': person.gender,
         'date_birth': person.date_birth.isoformat() if person.date_birth else None,
         'place_birth': person.place_birth,
         'age': person.age,
@@ -208,6 +223,7 @@ def dict_to_person(row: Dict[str, Any]) -> PersonInfo:
         first_name=row['first_name'],
         second_name=row['second_name'],
         third_name=row['third_name'],
+        gender=row["gender"],
         date_birth=date.fromisoformat(row['date_birth']) if row['date_birth'] else None,
         place_birth=row['place_birth'],
         age=row['age'],

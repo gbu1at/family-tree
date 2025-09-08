@@ -94,48 +94,95 @@
         <form id="personForm" class="modal-form">
             <input type="hidden" id="personId" name="person_id">
             
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="birthDate">Дата рождения</label>
-                    <input type="date" id="birthDate" name="birth_date" class="form-input">
-                </div>
-                
-                <div class="form-group">
-                    <label for="birthPlace">Место рождения</label>
-                    <input type="text" id="birthPlace" name="birth_place" class="form-input" placeholder="Город, страна">
+            <!-- Основная информация -->
+            <div class="form-section">
+                <h3>Основная информация</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthDate">Дата рождения</label>
+                        <input type="date" id="birthDate" name="birth_date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthPlace">Место рождения</label>
+                        <input type="text" id="birthPlace" name="birth_place" class="form-input" placeholder="Город, страна">
+                    </div>
+                    <div class="form-group">
+                        <label>Пол *</label>
+                        <div class="gender-selector">
+                            <input type="hidden" id="gender" name="gender" required>
+                            <button type="button" class="gender-btn male" data-gender="m" onclick="selectGender('m')">
+                                ♂ Мужской
+                            </button>
+                            <button type="button" class="gender-btn female" data-gender="f" onclick="selectGender('f')">
+                                ♀ Женский
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-row">
+            <!-- Родители -->
+            <div class="form-section">
+                <h3>Родители</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Мать</label>
+                        <div class="parent-selector">
+                            <span id="motherName">Не выбрана</span>
+                            <button type="button" class="btn-select" onclick="openParentSelector('mother')">Выбрать</button>
+                            <button type="button" class="btn-clear" onclick="clearParent('mother')">✕</button>
+                        </div>
+                        <input type="hidden" id="motherId" name="mother_id">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Отец</label>
+                        <div class="parent-selector">
+                            <span id="fatherName">Не выбран</span>
+                            <button type="button" class="btn-select" onclick="openParentSelector('father')">Выбрать</button>
+                            <button type="button" class="btn-clear" onclick="clearParent('father')">✕</button>
+                        </div>
+                        <input type="hidden" id="fatherId" name="father_id">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Остальные поля остаются без изменений -->
+            <div class="form-section">
+                <h3>Дополнительная информация</h3>
                 <div class="form-group">
                     <label for="age">Возраст</label>
                     <input type="number" id="age" name="age" class="form-input" min="0" max="150">
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="deathDate">Дата смерти</label>
-                    <input type="date" id="deathDate" name="death_date" class="form-input">
+                    <label for="history">История жизни</label>
+                    <textarea id="history" name="history" class="form-textarea" rows="3" placeholder="Расскажите историю жизни человека..."></textarea>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="deathPlace">Место смерти</label>
-                <input type="text" id="deathPlace" name="death_place" class="form-input" placeholder="Город, страна">
-            </div>
+                <div class="form-group">
+                    <label for="education">Образование</label>
+                    <textarea id="education" name="education" class="form-textarea" rows="2" placeholder="Учебные заведения через запятую..."></textarea>
+                </div>
 
-            <div class="form-group">
-                <label for="history">История жизни</label>
-                <textarea id="history" name="history" class="form-textarea" rows="3" placeholder="Расскажите историю жизни человека..."></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="work">Места работы</label>
+                    <textarea id="work" name="work" class="form-textarea" rows="2" placeholder="Места работы через запятую..."></textarea>
+                </div>
 
-            <div class="form-group">
-                <label for="education">Образование</label>
-                <textarea id="education" name="education" class="form-textarea" rows="2" placeholder="Учебные заведения через запятую..."></textarea>
-            </div>
+                <div class="form-row">
 
-            <div class="form-group">
-                <label for="work">Места работы</label>
-                <textarea id="work" name="work" class="form-textarea" rows="2" placeholder="Места работы через запятую..."></textarea>
+                    <div class="form-group">
+                        <label for="deathDate">Дата смерти</label>
+                        <input type="date" id="deathDate" name="death_date" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deathPlace">Место смерти</label>
+                        <input type="text" id="deathPlace" name="death_place" class="form-input" placeholder="Город, страна">
+                    </div>
+                </div>
+
             </div>
 
             <div class="form-actions">
@@ -145,5 +192,25 @@
         </form>
     </div>
 </div>
+
+<!-- Модальное окно для выбора родителя -->
+<div id="parentModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Выбор родителя</h2>
+            <span class="close" onclick="closeParentModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <input type="text" id="parentSearch" placeholder="Поиск по имени..." class="search-input">
+            <div class="parents-list" id="parentsList">
+                <!-- Список людей будет загружен здесь -->
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeParentModal()">Отмена</button>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

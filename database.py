@@ -18,6 +18,7 @@ class PersonDB:
                     first_name TEXT NOT NULL,
                     second_name TEXT NOT NULL,
                     third_name TEXT,
+                    gender TEXT CHECK(gender IN ('m', 'f')),
                     date_birth TEXT,
                     place_birth TEXT,
                     age INTEGER,
@@ -45,13 +46,14 @@ class PersonDB:
             cursor = conn.cursor()
             cursor.execute('''
                 INSERT INTO persons 
-                (first_name, second_name, third_name, date_birth, place_birth, 
+                (first_name, second_name, third_name, gender, date_birth, place_birth, 
                  age, date_death, place_death, history, education, work, mom_id, dad_id, x, y)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 person_data['first_name'],
                 person_data['second_name'],
                 person_data['third_name'],
+                person_data['gender'],
                 person_data['date_birth'],
                 person_data['place_birth'],
                 person_data['age'],
@@ -98,12 +100,11 @@ class PersonDB:
     
     def update_person(self, person_id: int, person: PersonInfo) -> bool:
         person_data = person_to_dict(person)
-        
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute('''
                 UPDATE persons 
-                SET first_name = ?, second_name = ?, third_name = ?, 
+                SET first_name = ?, second_name = ?, third_name = ?, gender = ?,
                     date_birth = ?, place_birth = ?, age = ?, 
                     date_death = ?, place_death = ?, history = ?, 
                     education = ?, work = ?, mom_id = ?, dad_id = ?, x = ?, y = ?
@@ -112,6 +113,7 @@ class PersonDB:
                 person_data['first_name'],
                 person_data['second_name'],
                 person_data['third_name'],
+                person_data['gender'],
                 person_data['date_birth'],
                 person_data['place_birth'],
                 person_data['age'],

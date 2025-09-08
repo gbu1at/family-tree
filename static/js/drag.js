@@ -54,6 +54,10 @@ function updatePersonPosition(personId, x, y) {
 
 // Начало перетаскивания
 document.addEventListener('mousedown', function(e) {
+    if (e.target.closest('.edit-btn')) {
+        return;
+    }
+
     const personNode = e.target.closest('.person-node');
     if (personNode) {
         // Останавливаем всплытие только если это не кнопка

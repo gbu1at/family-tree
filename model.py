@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 
 class PersonInfo:
     def __init__(self):
@@ -14,8 +14,8 @@ class PersonInfo:
         self.date_death: Optional[date] = None
         self.place_death: Optional[str] = None
         self.history: Optional[str] = None
-        self.education: Optional[List[str]] = None
-        self.work: Optional[List[str]] = None
+        self.education: Optional[str] = None
+        self.work: Optional[str] = None
         
         self.mom_id: Optional[int] = None
         self.dad_id: Optional[int] = None
@@ -40,34 +40,72 @@ class PersonInfo:
         self.second_name = second_name.strip()
     
     def set_third_name(self, third_name: Optional[str]) -> None:
-        if third_name is not None and (not isinstance(third_name, str) or not third_name.strip()):
+        if third_name is not None and not isinstance(third_name, str):
             raise ValueError("Отчество должно быть строкой или None")
         self.third_name = third_name.strip() if third_name else None
     
-    def set_date_birth(self, date_birth: Optional[date]) -> None:
-        if date_birth is not None and not isinstance(date_birth, date):
-            raise ValueError("Дата рождения должна быть объектом date или None")
-        if date_birth and date_birth > datetime.now().date():
-            raise ValueError("Дата рождения не может быть в будущем")
+    def set_date_birth(self, date_birth: Optional[Union[date, str]]) -> None:
+        if date_birth is not None:
+            if isinstance(date_birth, str):
+                if not date_birth.strip():
+                    self.date_birth = None
+                    return
+                try:
+                    for fmt in ('%Y-%m-%d', '%d.%m.%Y', '%d/%m/%Y', '%Y.%m.%d'):
+                        try:
+                            date_birth = datetime.strptime(date_birth, fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                    else:
+                        raise ValueError(f"Неверный формат даты: {date_birth}")
+                except Exception as e:
+                    raise ValueError(f"Ошибка преобразования даты: {e}")
+            
+            if not isinstance(date_birth, date):
+                raise ValueError("Дата должна быть объектом date, строкой или None")
+            
+            if date_birth > datetime.now().date():
+                raise ValueError("Дата не может быть в будущем")
+        
         self.date_birth = date_birth
     
     def set_place_birth(self, place_birth: Optional[str]) -> None:
-        if place_birth is not None and (not isinstance(place_birth, str) or not place_birth.strip()):
+        if place_birth is not None and not isinstance(place_birth, str):
             raise ValueError("Место рождения должно быть строкой или None")
         self.place_birth = place_birth.strip() if place_birth else None
     
     def set_date_death(self, date_death: Optional[date]) -> None:
-        if date_death is not None and not isinstance(date_death, date):
-            raise ValueError("Дата смерти должна быть объектом date или None")
-        if date_death and self.date_birth and date_death < self.date_birth:
-            raise ValueError("Дата смерти не может быть раньше даты рождения")
+        if date_death is not None:
+            if isinstance(date_death, str):
+                if not date_death.strip():
+                    self.date_death = None
+                    return
+                try:
+                    for fmt in ('%Y-%m-%d', '%d.%m.%Y', '%d/%m/%Y', '%Y.%m.%d'):
+                        try:
+                            date_death = datetime.strptime(date_death, fmt).date()
+                            break
+                        except ValueError:
+                            continue
+                    else:
+                        raise ValueError(f"Неверный формат даты: {date_death}")
+                except Exception as e:
+                    raise ValueError(f"Ошибка преобразования даты: {e}")
+            
+            if not isinstance(date_death, date):
+                raise ValueError("Дата должна быть объектом date, строкой или None")
+            
+            if date_death > datetime.now().date():
+                raise ValueError("Дата не может быть в будущем")
+        
         self.date_death = date_death
         
         if self.date_birth:
             self._calculate_age()
     
     def set_place_death(self, place_death: Optional[str]) -> None:
-        if place_death is not None and (not isinstance(place_death, str) or not place_death.strip()):
+        if place_death is not None and not isinstance(place_death, str):
             raise ValueError("Место смерти должно быть строкой или None")
         self.place_death = place_death.strip() if place_death else None
     
@@ -76,16 +114,14 @@ class PersonInfo:
             raise ValueError("История должна быть строкой или None")
         self.history = history
     
-    def set_education(self, education: Optional[List[str]]) -> None:
-        if education is not None:
-            if not isinstance(education, list) or not all(isinstance(edu, str) for edu in education):
-                raise ValueError("Образование должно быть списком строк или None")
+    def set_education(self, education: Optional[str]) -> None:
+        if education is not None and not isinstance(education, str):
+            raise ValueError("Образование должно быть строкой или None")
         self.education = education
     
-    def set_work(self, work: Optional[List[str]]) -> None:
-        if work is not None:
-            if not isinstance(work, list) or not all(isinstance(job, str) for job in work):
-                raise ValueError("Работа должна быть списком строк или None")
+    def set_work(self, work: Optional[str]) -> None:
+        if work is not None and not isinstance(work, str):
+            raise ValueError("Работа должно быть строкой или None")
         self.work = work
 
     def set_x(self, x) -> None:
@@ -125,6 +161,18 @@ class PersonInfo:
         for key, value in info.items():
             if hasattr(self, key):
                 setter_method = f"set_{key}"
+                if hasattr(self, setter_method):
+                    getattr(self, setter_method)(value)
+                else:
+                    setattr(self, key, value)
+            else:
+                raise AttributeError(f"PersonInfo не имеет атрибута '{key}'")
+            
+    def set_kwargs(self, info) -> None:
+        for key, value in info.items():
+            if hasattr(self, key):
+                setter_method = f"set_{key}"
+                print(setter_method)
                 if hasattr(self, setter_method):
                     getattr(self, setter_method)(value)
                 else:

@@ -124,6 +124,7 @@ class PersonDB:
                 person_data['dad_id'],
                 person_data['x'],
                 person_data['y'],
+                person_id
             ))
             conn.commit()
             return cursor.rowcount > 0

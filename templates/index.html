@@ -41,6 +41,7 @@
                 <span class="person-patronymic">{{ person.third_name }}</span>
                 {% endif %}
             </div>
+            <button class="edit-btn" onclick="openModal({{ person.id }}, event)">✏️ Редактировать</button>
         </div>
         {% endfor %}
     </div>
@@ -80,6 +81,69 @@
         </div>
     </form>
 </div>
-
 </div>
+
+
+<!-- Модальное окно -->
+<div id="personModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Редактирование данных</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <form id="personForm" class="modal-form">
+            <input type="hidden" id="personId" name="person_id">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="birthDate">Дата рождения</label>
+                    <input type="date" id="birthDate" name="birth_date" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthPlace">Место рождения</label>
+                    <input type="text" id="birthPlace" name="birth_place" class="form-input" placeholder="Город, страна">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="age">Возраст</label>
+                    <input type="number" id="age" name="age" class="form-input" min="0" max="150">
+                </div>
+                
+                <div class="form-group">
+                    <label for="deathDate">Дата смерти</label>
+                    <input type="date" id="deathDate" name="death_date" class="form-input">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="deathPlace">Место смерти</label>
+                <input type="text" id="deathPlace" name="death_place" class="form-input" placeholder="Город, страна">
+            </div>
+
+            <div class="form-group">
+                <label for="history">История жизни</label>
+                <textarea id="history" name="history" class="form-textarea" rows="3" placeholder="Расскажите историю жизни человека..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="education">Образование</label>
+                <textarea id="education" name="education" class="form-textarea" rows="2" placeholder="Учебные заведения через запятую..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="work">Места работы</label>
+                <textarea id="work" name="work" class="form-textarea" rows="2" placeholder="Места работы через запятую..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endblock %}

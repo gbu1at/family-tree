@@ -59,8 +59,6 @@ function centerOnPerson(personElement) {
     // Получаем координаты человека
     const personX = parseInt(personElement.style.left) || 0;
     const personY = parseInt(personElement.style.top) || 0;
-
-    console.log(personX, personY);
     
     // Вычисляем центр видимой области
     const centerX = treeWrapper.offsetWidth / 2;

@@ -7,7 +7,6 @@ function openModal(personId, event) {
         event.preventDefault();
     }
     
-    console.log("open");
     currentPersonId = personId;
     
     // ПОКАЗЫВАЕМ модальное окно
@@ -21,7 +20,6 @@ function openModal(personId, event) {
 
 // Закрытие модального окна
 function closeModal() {
-    console.log("close");
     const modal = document.getElementById('personModal');
     modal.style.display = 'none';
     currentPersonId = null;
@@ -34,9 +32,6 @@ async function loadPersonData(personId) {
         const response = await fetch(`/api/person/${personId}`);
         const person = await response.json();
         
-        // console.log(person.date_birth)
-        // console.log(person.xxxx)
-        // Заполняем форму данными
         document.getElementById('gender').value = person.gender;
         document.getElementById('birthDate').value = person.date_birth || '';
         document.getElementById('birthPlace').value = person.place_birth || '';
@@ -46,8 +41,14 @@ async function loadPersonData(personId) {
         document.getElementById('history').value = person.history || '';
         document.getElementById('education').value = person.education ? JSON.parse(person.education).join(', ') : '';
         document.getElementById('work').value = person.work ? JSON.parse(person.work).join(', ') : '';
+        document.getElementById('motherId').value = person.mom_id || '';
+        document.getElementById('fatherId').value = person.dad_id || '';
 
-        console.log(person.gender)
+        document.getElementById('motherName').textContent = person.mother_name || "Не выбрана";
+            
+        document.getElementById('fatherName').textContent = person.father_name || "Не выбран";
+            
+
         selectGender(person.gender);
         
     } catch (error) {
@@ -62,6 +63,7 @@ document.getElementById('personForm').addEventListener('submit', async function(
     e.preventDefault();
     
     const formData = new FormData(this);
+    
     const data = {
         id: currentPersonId,
         date_birth: formData.get('birth_date'),
@@ -71,9 +73,12 @@ document.getElementById('personForm').addEventListener('submit', async function(
         place_death: formData.get('death_place'),
         history: formData.get('history'),
         education: formData.get('education'),
-        work: formData.get('work')
+        work: formData.get('work'),
+        mom_id: document.getElementById('motherId').value == '' ? null : document.getElementById('motherId').value ,
+        dad_id: document.getElementById('fatherId').value == '' ? null : document.getElementById('fatherId').value 
     };
-    
+
+
     try {
         const response = await fetch('/api/update_person', {
             method: 'POST',

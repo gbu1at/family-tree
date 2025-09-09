@@ -28,6 +28,9 @@
     </div>
     
     <div class="tree-container" id="treeContainer">
+
+        <svg id="connectionsSVG" xmlns="http://www.w3.org/2000/svg"></svg>
+        
         {% for person in persons %}
         <div class="person-node"
             style="left: {{ person.x }}px; top: {{ person.y }}px;"
@@ -211,6 +214,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 {% endblock %}

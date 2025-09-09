@@ -9,7 +9,8 @@ db = PersonDB()
 @app.route('/')
 def index():
     persons = db.get_all_persons()
-    return render_template('index.html', persons=persons)
+    relations = db.get_all_relation()
+    return render_template('index.html', persons=persons, relations=relations)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_person():
@@ -17,8 +18,6 @@ def add_person():
     if request.method == 'POST':
         try:
             person = PersonInfo()
-
-            print(request.form.get('gender'))
 
             person.set( first_name=request.form.get('first_name'),
                         second_name=request.form.get('second_name'),
@@ -66,9 +65,9 @@ def update_person_data():
     """Обновление данных человека"""
     try:
         data = request.get_json()
-        
-        print(data)
 
+        print(data)
+        
         person_id = data.get('id')
 
         person = db.get_person(person_id)
@@ -87,7 +86,6 @@ def update_person_data():
 @app.route('/api/person/<int:person_id>')
 def get_person_data(person_id):
     """Получение данных человека включая информацию о родителях"""
-    print(person_id)
     try:
         person = db.get_person(person_id)
         if person:
@@ -100,8 +98,9 @@ def get_person_data(person_id):
             if person.dad_id:
                 father = db.get_person(person.dad_id)
                 father_name = f"{father.second_name} {father.first_name} {father.third_name or ''}"
-            
-            print(person.date_birth)
+
+            print(person.gender)
+
 
             return jsonify({
                 'id': person.id,
@@ -146,9 +145,35 @@ def get_persons():
 
 
 
-@app.route('/api/list_relation')
+@app.route('/list_relation')
 def list_relation():
-    pass
+    persons = db.get_all_persons()
+    return render_template('list_relation.html', persons=persons)
+
+
+@app.route('/person/<int:person_id>')
+def person_page(person_id):
+    person = db.get_person(person_id)
+    if not person:
+        return "Пользователь не найден", 404
+    return render_template('person_page.html', person=person)
+
+
+
+@app.route('/api/family_connections')
+def get_family_connections():
+    """API для получения семейных связей"""
+    try:
+        # Здесь должен быть код для получения связей из вашей базы данных
+        # Пример возвращаемых данных:
+        connections = db.get_all_relation()
+
+        print(connections)
+        
+        return jsonify(connections)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

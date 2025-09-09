@@ -163,3 +163,16 @@ class PersonDB:
             ''', (x, y, person_id))
             conn.commit()
             return cursor.rowcount > 0
+
+    def get_all_relation(self):
+        persons = self.get_all_persons()
+
+        edges = []
+
+        for p in persons:
+            if p.mom_id is not None:
+                edges.append({"from_id": p.id, "to_id": p.mom_id})
+            if p.dad_id is not None:
+                edges.append({"from_id": p.id, "to_id": p.dad_id})
+
+        return edges

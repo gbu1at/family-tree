@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ person.second_name }} {{ person.first_name }} {{ person.third_name or '' }}</h2>
+    <div class="user-info">
+        <p><strong>Пол:</strong> {{ 'Мужской' if person.gender == 'm' else 'Женский' if person.gender == 'f' else '-' }}</p>
+        <p><strong>Дата рождения:</strong> {{ person.date_birth or '-' }}</p>
+        <p><strong>Место рождения:</strong> {{ person.place_birth or '-' }}</p>
+        <p><strong>Возраст:</strong> {{ person.age or '-' }}</p>
+        <p><strong>Образование:</strong> {{ person.education or '-' }}</p>
+        <p><strong>Работа:</strong> {{ person.work or '-' }}</p>
+        <p><strong>История жизни:</strong> {{ person.history or '-' }}</p>
+        <p><strong>Дата смерти:</strong> {{ person.date_death or '-' }}</p>
+        <p><strong>Место смерти:</strong> {{ person.place_death or '-' }}</p>
+    </div>
+    <div class="actions">
+        <a href="{{ url_for('list_relation') }}" class="btn btn-secondary">Назад</a>
+        <a href="{{ url_for('delete_person', person_id=person.id) }}" class="btn btn-secondary">Удалить</a>
+    </div>
+</div>
+{% endblock %}

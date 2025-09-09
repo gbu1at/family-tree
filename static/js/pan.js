@@ -61,6 +61,7 @@ function resetView() {
 
 function updateTransform() {
     treeContainer.style.transform = `translate(${-translateX}px, ${-translateY}px) scale(${scale})`;
+    refreshConnections();
 }
 
 // Обработка клавиатуры

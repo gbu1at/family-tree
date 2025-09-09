@@ -15,8 +15,6 @@ function selectGender(gender) {
     
     // Устанавливаем значение в hidden input
     document.getElementById('gender').value = gender; // Сохраняем в верхнем регистре
-    
-    console.log('Выбран пол:', gender);
 }
 
 // Валидация формы перед отправкой

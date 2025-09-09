@@ -174,7 +174,6 @@ class PersonInfo:
         for key, value in info.items():
             if hasattr(self, key):
                 setter_method = f"set_{key}"
-                print(setter_method)
                 if hasattr(self, setter_method):
                     getattr(self, setter_method)(value)
                 else:
@@ -186,7 +185,6 @@ class PersonInfo:
         for key, value in info.items():
             if hasattr(self, key):
                 setter_method = f"set_{key}"
-                print(setter_method)
                 if hasattr(self, setter_method):
                     getattr(self, setter_method)(value)
                 else:

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Список пользователей</h2>
+    <div class="user-list">
+        {% for person in persons %}
+        <a href="{{ url_for('person_page', person_id=person.id) }}" class="user-btn">
+            {{ person.second_name }} {{ person.first_name }} {{ person.third_name or '' }}
+        </a>
+        {% else %}
+        <p>Пока нет пользователей</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

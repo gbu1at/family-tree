@@ -128,7 +128,6 @@ function handlePersonUp(e) {
             const x = parseInt(draggedPerson.style.left) || 0;
             const y = parseInt(draggedPerson.style.top) || 0;
             
-            console.log(`Сохранение позиции для person ${personId}: (${x}, ${y})`);
             updatePersonPosition(personId, x, y);
         }
         
@@ -141,6 +140,8 @@ function handlePersonUp(e) {
         document.removeEventListener('mouseup', handlePersonUp);
         
         draggedPerson = null;
+
+        refreshConnections();
     }
 }
 
